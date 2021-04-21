@@ -49,51 +49,83 @@ function obterEndereco(idUsuario, callback) {
     }, 2000)
 }
 
-//Chamada usando promise
-const usuarioPromise = obterUsuario()
-// Para manipular o sucesso usamos a função '.then()'
-// Para manilular erros usamos '.catch'
-// Conceito de pipe: usuario -> telefone -> o ultimo chamado é o telefone
-usuarioPromise
-    //Pode utilizar o mesmo nome 'resultado', pois após a execução de cada contexto ele é excluído
-    .then(function (usuario) {
-        //Chama a promise obterTelefone passando o resultado que é o id do usuário
-        return obterTelefone(usuario.id)
-            //resolvendo promise de telefone, para passar o resultado com dados de usuário
-            .then(function resolverTelefone(result) {
-                return {
-                    usuario: {
-                        nome: usuario.nome,
-                        id: usuario.id
-                    },
-                    telefone: result
-                }
-            })
-    })
+// Usando async/await
+// adicionar a palavra async -> automaticamente retorna uma promise
 
-    //resultado vem do ultimo '.then'
-    .then(function (resultado) {
-        const endereco = obterEnderecoAsync(resultado.usuario.id)
-        //resolve endereco
-        return endereco.then(function resolverEndereco(result) {
-            return {
-                usuario: resultado.usuario,
-                telefone: resultado.telefone,
-                endereco: result
-            }
-        })
-    })
+//Não executando nada após o main, não chamamos o then e catch dele
+main()
+async function main() {
+    try {
+        console.time('medida-promise')
 
-    .then(function (resultado) {
-            console.log(`
-                 Nome: ${resultado.usuario.nome},
-                 Endereco: ${resultado.endereco.rua},${resultado.endereco.numero}
-                 Telefone: (${resultado.telefone.ddd})${resultado.telefone.telefone}
+        const usuario = await obterUsuario()
+        //const telefone = await obterTelefone(usuario.id)
+        //const endereco = await obterEnderecoAsync(usuario.id)
+
+        const resultado = await Promise.all([
+            obterTelefone(usuario.id),
+            obterEnderecoAsync(usuario.id)
+        ])
+
+        const endereco = resultado[1]
+        const telefone = resultado[0]
+
+        console.log(`
+                 Nome: ${usuario.nome},
+                 Endereco: ${endereco.rua},${endereco.numero}
+                 Telefone: (${telefone.ddd})${telefone.telefone}
         `)
-    })
-    .catch(function (error){
-        console.error('DEU RUIM', error)
-    })
+         console.timeEnd('medida-promise')
+    } catch (error) {
+        console.log('DEU RUIM', error)
+    }
+}
+
+//Chamada usando promise
+//const usuarioPromise = obterUsuario()
+//// Para manipular o sucesso usamos a função '.then()'
+//// Para manilular erros usamos '.catch'
+//// Conceito de pipe: usuario -> telefone -> o ultimo chamado é o telefone
+//usuarioPromise
+//    //Pode utilizar o mesmo nome 'resultado', pois após a execução de cada contexto ele é excluído
+//    .then(function (usuario) {
+//        //Chama a promise obterTelefone passando o resultado que é o id do usuário
+//        return obterTelefone(usuario.id)
+//            //resolvendo promise de telefone, para passar o resultado com dados de usuário
+//            .then(function resolverTelefone(result) {
+//                return {
+//                    usuario: {
+//                        nome: usuario.nome,
+//                        id: usuario.id
+//                    },
+//                    telefone: result
+//                }
+//            })
+//    })
+//
+//    //resultado vem do ultimo '.then'
+//    .then(function (resultado) {
+//        const endereco = obterEnderecoAsync(resultado.usuario.id)
+//        //resolve endereco
+//        return endereco.then(function resolverEndereco(result) {
+//            return {
+//                usuario: resultado.usuario,
+//                telefone: resultado.telefone,
+//                endereco: result
+//            }
+//        })
+//    })
+//
+//    .then(function (resultado) {
+//            console.log(`
+//                 Nome: ${resultado.usuario.nome},
+//                 Endereco: ${resultado.endereco.rua},${resultado.endereco.numero}
+//                 Telefone: (${resultado.telefone.ddd})${resultado.telefone.telefone}
+//        `)
+//    })
+//    .catch(function (error){
+//        console.error('DEU RUIM', error)
+//    })
 
 //Chamada usando callback
 // obterUsuario(function resolverUsuario(error, usuario){
