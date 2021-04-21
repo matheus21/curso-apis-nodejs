@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/01-npm.iml" filepath="$PROJECT_DIR$/.idea/01-npm.iml" />
       <module fileurl="file://$PROJECT_DIR$/../02-nodejs/.idea/02-nodejs.iml" filepath="$PROJECT_DIR$/../02-nodejs/.idea/02-nodejs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../03-events/.idea/03-events.iml" filepath="$PROJECT_DIR$/../03-events/.idea/03-events.iml" />
     </modules>
   </component>
 </project>
