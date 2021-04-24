@@ -8,13 +8,12 @@ const DEFAULT_ITEM_CADASTRADO = {nome: 'Flash', poder: 'Speed', id: 1}
 
 describe('Suite de manipulação de Herois', () => {
 
+    //Cadastra algum heroi sempre antes dos testes
+    before(async () => {
+        await database.cadastrar(DEFAULT_ITEM_CADASTRADO)
+    })
+
     it('deve pesquisar um heroi usando arquivos', async () => {
-
-        //Cadastra algum heroi sempre antes dos testes
-        before(async () => {
-            await database.cadastrar(DEFAULT_ITEM_CADASTRADO)
-        })
-
         const expected = DEFAULT_ITEM_CADASTRADO
         //destructor -> pega somente o primeiro colocando os colchetes, colocando mais varáveis retorna mais itens na sequencia
         const [resultado] = await database.listar(expected.id)
