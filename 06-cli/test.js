@@ -4,7 +4,17 @@ const {
 } = require('assert')
 
 const database = require('./database')
-const DEFAULT_ITEM_CADASTRADO = {nome: 'Flash', poder: 'Speed', id: 1}
+const DEFAULT_ITEM_CADASTRADO = {
+    nome: 'Flash',
+    poder: 'Speed',
+    id: 1
+}
+
+const DEFAULT_ITEM_ATUALIZAR = {
+    nome: 'Lanterna Verde',
+    poder: 'Energia do Anel',
+    id: 2
+}
 
 describe('Suite de manipulação de Herois', () => {
 
@@ -12,6 +22,7 @@ describe('Suite de manipulação de Herois', () => {
     //Para sempre passar o teste de delete, insere um usuario antes para deletar
     before(async () => {
         await database.cadastrar(DEFAULT_ITEM_CADASTRADO)
+        await database.cadastrar(DEFAULT_ITEM_ATUALIZAR)
     })
 
     it('deve pesquisar um heroi usando arquivos', async () => {
@@ -29,10 +40,30 @@ describe('Suite de manipulação de Herois', () => {
         deepEqual(atual, expected)
     })
 
-    //'only' => só executa esse teste
+    //'it.only' => só executa esse teste
     it('deve remover o heroi por id', async () => {
         const expected = true;
         const resultado = await database.remover(DEFAULT_ITEM_CADASTRADO.id)
         deepEqual(resultado, expected)
     })
+
+    it('deve atualizar um heroi por id', async () => {
+
+        //mantem o id
+        const expected = {
+            ...DEFAULT_ITEM_ATUALIZAR,
+            nome: 'Batman',
+            poder: 'Dinheiro'
+        }
+        //Não passa o id, para não modificar o id também
+        const novoDado = {
+            nome: 'Batman',
+            poder: 'Dinheiro'
+        }
+        await database.atualizar(DEFAULT_ITEM_ATUALIZAR.id, novoDado)
+        //Listar para checar se o resultado é o mesmo
+        const [resultado] = await database.listar(DEFAULT_ITEM_ATUALIZAR.id)
+        deepEqual(resultado, expected)
+    })
+
 })

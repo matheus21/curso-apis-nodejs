@@ -79,6 +79,31 @@ class Database {
         //Escreve os arquivos sem o dado removido
         return await this.escreverArquivo(dados)
     }
+
+    async atualizar(id, modificacoes) {
+        const dados = await this.obterDadosArquivo()
+        const indice = dados.findIndex(item => item.id === parseInt(id))
+
+        if(indice === -1) {
+            throw Error('O heroi informado nao existe!')
+        }
+        //Item a ser atualizado
+        const atual = dados[indice]
+
+        //Prepara o objeto atualizado, substituindo o que tiver no atual, pelas modificações (merge)
+        const objetoAtualizar = {
+            ...atual,
+            ...modificacoes
+        }
+        //remove da lista
+        dados.splice(indice, 1)
+
+        //Escreve os dados atualizados
+        return await this.escreverArquivo([
+            ...dados,
+            objetoAtualizar
+        ])
+    }
 }
 
 module.exports = new Database()
