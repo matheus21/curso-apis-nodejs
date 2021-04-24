@@ -1,0 +1,8 @@
+01-npm/.idea
+02-nodejs/.idea
+03-events/.idea
+04-lists/.idea
+05-tests/.idea
+06-cli/.idea
+*.iml
+*.xml
