@@ -5,5 +5,7 @@
 05-tests/.idea
 06-cli/.idea
 06-cli/node_modules
+07-multi-db/node_modules
+07-multi-db/.idea
 *.iml
 *.xml
