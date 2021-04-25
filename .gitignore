@@ -4,5 +4,6 @@
 04-lists/.idea
 05-tests/.idea
 06-cli/.idea
+06-cli/node_modules
 *.iml
 *.xml
