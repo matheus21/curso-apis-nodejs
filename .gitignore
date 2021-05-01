@@ -7,5 +7,7 @@
 06-cli/node_modules
 07-multi-db/node_modules
 07-multi-db/.idea
+08-multi-db-postgres/.idea
+08-multi-db-postgres/node_modules
 *.iml
 *.xml
